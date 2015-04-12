@@ -1,5 +1,6 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -31,8 +32,24 @@ public class MainThread extends Thread {
 
         Log.d(TAG, "Starting game loop");
 
+        Canvas canvas;
+
         while (running) {
             tickCount++;
+
+            canvas = null;
+
+            try {
+                canvas = this.surfaceHolder.lockCanvas();
+                synchronized (surfaceHolder) {
+                    // draw canvas
+                    this.gamePanel.onDraw(canvas);
+                }
+            } finally {
+                if (canvas != null) {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
+            }
         }
 
         Log.d(TAG, "Game loop executed " + tickCount + " times");
