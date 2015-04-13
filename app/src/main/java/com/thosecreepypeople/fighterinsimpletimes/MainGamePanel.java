@@ -119,7 +119,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
-        player.update();
         drawGladiator(canvas, R.mipmap.fist_guy, player.getPosX(), player.getPosY());
     }
 
@@ -129,5 +128,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private void drawGladiator(Canvas canvas, int resID, int posX, int posY) {
         canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), resID), hOffset + posX, vOffset + posY, null);
+    }
+
+    public PlayerGladiator getPlayer() {
+        return player;
     }
 }

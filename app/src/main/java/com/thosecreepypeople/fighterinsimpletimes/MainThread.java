@@ -50,6 +50,8 @@ public class MainThread extends Thread {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
+
+            this.gamePanel.getPlayer().update();
         }
 
         Log.d(TAG, "Game loop executed " + tickCount + " times");
