@@ -27,7 +27,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int hOffset;
 
     // player reference
-    private Gladiator player;
+    private PlayerGladiator player;
 
     public MainGamePanel(Context context) {
         super(context);
@@ -47,7 +47,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         hOffset = (size.x - (Stadium.TILES_W * Stadium.TILE_SIZE)) / 2;
 
         // create player
-        player = new Gladiator();
+        player = new PlayerGladiator();
     }
 
     @Override
@@ -119,6 +119,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
+        player.update();
         drawGladiator(canvas, R.mipmap.fist_guy, player.getPosX(), player.getPosY());
     }
 
