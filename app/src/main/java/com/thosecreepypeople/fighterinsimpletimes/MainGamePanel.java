@@ -47,7 +47,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         hOffset = (size.x - (Stadium.TILES_W * Stadium.TILE_SIZE)) / 2;
 
         // create player
-        player = new PlayerGladiator();
+        player = new PlayerGladiator(context);
     }
 
     @Override
@@ -84,18 +84,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         // else print touch location
         int edgeDist = 100;
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        boolean debugging = true;
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN && debugging) {
             if (event.getY() < 50 && event.getX() < 50) {
                 thread.setRunning(false);
                 ((Activity)getContext()).finish();
             } else if (event.getY() > getHeight() - edgeDist) {
-                player.move(Gladiator.DIR.Down);
+                player.setDirection(Gladiator.DIR.Down);
             } else if (event.getY() < edgeDist) {
-                player.move(Gladiator.DIR.Up);
+                player.setDirection(Gladiator.DIR.Up);
             } else if (event.getX() > getWidth() - edgeDist) {
-                player.move(Gladiator.DIR.Right);
+                player.setDirection(Gladiator.DIR.Right);
             } else if (event.getX() < edgeDist) {
-                player.move(Gladiator.DIR.Left);
+                player.setDirection(Gladiator.DIR.Left);
             } else {
                 Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
             }
@@ -105,7 +107,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void draw(Canvas canvas) {
         for (int i = 0; i < floor.length; i++) {
             for (int j = 0; j < floor[i].length; j++) {
                 switch (floor[i][j]) {
@@ -132,5 +134,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public PlayerGladiator getPlayer() {
         return player;
+    }
+
+    public MainThread getThread() {
+        return thread;
     }
 }

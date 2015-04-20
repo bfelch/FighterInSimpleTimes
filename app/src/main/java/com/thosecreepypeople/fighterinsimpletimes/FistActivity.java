@@ -12,6 +12,8 @@ import android.view.WindowManager;
 public class FistActivity extends Activity {
     private static final String TAG = FistActivity.class.getSimpleName();
 
+    MainGamePanel panel;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -19,7 +21,8 @@ public class FistActivity extends Activity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(new MainGamePanel(this));
+        panel = new MainGamePanel(this);
+        setContentView(panel);
 
         Log.d(TAG, "View added");
     }
@@ -49,12 +52,16 @@ public class FistActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        panel.getThread().setRunning(false);
+        finish();
         Log.d(TAG, "Destroying...");
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
+        panel.getThread().setRunning(false);
+        finish();
         Log.d(TAG, "Stopping...");
         super.onStop();
     }
