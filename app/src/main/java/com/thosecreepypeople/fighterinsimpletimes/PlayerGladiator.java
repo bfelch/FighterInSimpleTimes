@@ -24,7 +24,9 @@ public class PlayerGladiator extends Gladiator implements SensorEventListener {
 
     public PlayerGladiator(Context context) {
         Random r = new Random();
-        setPos(r.nextInt(Stadium.TILES_W * Stadium.TILE_SIZE), r.nextInt(Stadium.TILES_H * Stadium.TILE_SIZE));
+        int newX = r.nextInt((Stadium.TILES_W - 2) * Stadium.TILE_SIZE) + Stadium.TILE_SIZE;
+        int newY = r.nextInt((Stadium.TILES_H - 2) * Stadium.TILE_SIZE) + Stadium.TILE_SIZE;
+        setPos(newX, newY);
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);

@@ -52,6 +52,7 @@ public class MainThread extends Thread {
             }
 
             this.gamePanel.getPlayer().update();
+            this.gamePanel.getEnemy().update();
         }
 
         Log.d(TAG, "Game loop executed " + tickCount + " times");

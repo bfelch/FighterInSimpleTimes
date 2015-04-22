@@ -28,6 +28,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     // player reference
     private PlayerGladiator player;
+    private EnemyGladiator enemy;
 
     public MainGamePanel(Context context) {
         super(context);
@@ -48,6 +49,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         // create player
         player = new PlayerGladiator(context);
+        enemy = new EnemyGladiator();
     }
 
     @Override
@@ -110,7 +112,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void draw(Canvas canvas) {
         drawStadium(canvas);
 
-        drawGladiator(canvas, player.getSprite(), player.getPosX(), player.getPosY());
+        if (player.getPosY() < enemy.getPosY()) {
+            drawGladiator(canvas, player.getSprite(), player.getPosX(), player.getPosY());
+            drawGladiator(canvas, enemy.getSprite(), enemy.getPosX(), enemy.getPosY());
+        } else {
+            drawGladiator(canvas, enemy.getSprite(), enemy.getPosX(), enemy.getPosY());
+            drawGladiator(canvas, player.getSprite(), player.getPosX(), player.getPosY());
+        }
     }
 
     private void drawStadium(Canvas canvas) {
@@ -128,6 +136,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public PlayerGladiator getPlayer() {
         return player;
     }
+    public EnemyGladiator getEnemy() { return enemy; }
 
     public MainThread getThread() {
         return thread;
