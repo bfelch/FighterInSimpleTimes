@@ -108,20 +108,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void draw(Canvas canvas) {
-        for (int i = 0; i < floor.length; i++) {
-            for (int j = 0; j < floor[i].length; j++) {
-                switch (floor[i][j]) {
-                    case Stadium.TILE_SAND:
-                        drawTile(canvas, R.mipmap.sand, i, j);
-                        break;
-                    case Stadium.TILE_WALL:
-                        drawTile(canvas, R.mipmap.wall, i, j);
-                        break;
-                }
-            }
-        }
+        drawStadium(canvas);
 
-        drawGladiator(canvas, R.mipmap.fist_guy, player.getPosX(), player.getPosY());
+        drawGladiator(canvas, player.getSprite(), player.getPosX(), player.getPosY());
+    }
+
+    private void drawStadium(Canvas canvas) {
+        canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.stadium), hOffset, vOffset, null);
     }
 
     private void drawTile(Canvas canvas, int resID, int i, int j) {

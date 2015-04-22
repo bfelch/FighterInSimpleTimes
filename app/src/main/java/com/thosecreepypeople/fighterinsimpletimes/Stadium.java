@@ -5,7 +5,7 @@ package com.thosecreepypeople.fighterinsimpletimes;
  */
 public class Stadium {
 
-    public static final int TILE_SIZE = 200;
+    public static final int TILE_SIZE = 128;
 
     public static final int ASPECT_W = 4;
     public static final int ASPECT_H = 3;
@@ -17,6 +17,9 @@ public class Stadium {
 
     public static final char TILE_SAND = 's';
     public static final char TILE_WALL = 'w';
+
+    public static final int BACKDROP_W = 2560;
+    public static final int BACKDROP_H = 1600;
 
     public static char[][] getStadium() {
         char[][] floor = new char[TILES_W][TILES_H];
