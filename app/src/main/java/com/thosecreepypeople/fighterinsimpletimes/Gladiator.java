@@ -1,5 +1,7 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
+import android.util.Log;
+
 /**
  * Created by Brandon on 4/12/2015.
  */
@@ -8,6 +10,9 @@ public abstract class Gladiator {
         Up, Down, Left, Right, None
     };
 
+    public static final String TAG = "Gladiator";
+
+    protected int health;
     protected DIR movingDir = DIR.None;
     protected long knockout = 0;
 
@@ -33,6 +38,7 @@ public abstract class Gladiator {
     private long prevUpdate = 0;
 
     public Gladiator() {
+        health = 3;
         currUpdate = System.currentTimeMillis();
         prevUpdate = currUpdate;
     }
@@ -87,6 +93,10 @@ public abstract class Gladiator {
     }
 
     protected void setKnockout() {
+        health--;
+        if (health <= 0) {
+            Log.d(TAG, "LOSER!");
+        }
         knockout = maxKnockout;
     }
 

@@ -103,8 +103,8 @@ public class MainThread extends Thread {
     }
 
     private void resolveCollision(Gladiator.DIR collDir) {
-        int takeHitSpeed = 4;
-        int giveHitSpeed = 2;
+        int takeHitSpeed = 8;
+        int giveHitSpeed = 1;
 
         if (player.getDirection() == collDir) {
             if (enemy.getDirection() != Gladiator.getOpposite(collDir)) {
