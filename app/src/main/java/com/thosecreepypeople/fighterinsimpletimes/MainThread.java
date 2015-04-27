@@ -1,5 +1,6 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -15,11 +16,19 @@ public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private MainGamePanel gamePanel;
 
-    public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
+    // player reference
+    private PlayerGladiator player;
+    private EnemyGladiator enemy;
+
+    public MainThread(SurfaceHolder surfaceHolder, Context context, MainGamePanel gamePanel) {
         super();
 
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
+
+        // create player
+        player = new PlayerGladiator(context);
+        enemy = new EnemyGladiator();
     }
 
     public void setRunning(boolean running) {
@@ -51,10 +60,15 @@ public class MainThread extends Thread {
                 }
             }
 
-            this.gamePanel.getPlayer().update();
-            this.gamePanel.getEnemy().update();
+            player.update();
+            enemy.update();
         }
 
         Log.d(TAG, "Game loop executed " + tickCount + " times");
     }
+
+    public PlayerGladiator getPlayer() {
+        return player;
+    }
+    public EnemyGladiator getEnemy() { return enemy; }
 }

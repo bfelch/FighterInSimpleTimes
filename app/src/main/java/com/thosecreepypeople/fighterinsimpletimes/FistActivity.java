@@ -65,4 +65,12 @@ public class FistActivity extends Activity {
         Log.d(TAG, "Stopping...");
         super.onStop();
     }
+
+    @Override
+    protected void onPause() {
+        panel.getThread().setRunning(false);
+        finish();
+        Log.d(TAG, "Pausing...");
+        super.onPause();
+    }
 }

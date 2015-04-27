@@ -26,14 +26,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int vOffset;
     private int hOffset;
 
-    // player reference
-    private PlayerGladiator player;
-    private EnemyGladiator enemy;
-
     public MainGamePanel(Context context) {
         super(context);
         getHolder().addCallback(this);
-        thread = new MainThread(getHolder(), this);
+        thread = new MainThread(getHolder(), context, this);
         setFocusable(true);
 
         // initialize stadium
@@ -46,10 +42,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         display.getSize(size);
         vOffset = (size.y - (Stadium.TILES_H * Stadium.TILE_SIZE)) / 2;
         hOffset = (size.x - (Stadium.TILES_W * Stadium.TILE_SIZE)) / 2;
-
-        // create player
-        player = new PlayerGladiator(context);
-        enemy = new EnemyGladiator();
     }
 
     @Override
@@ -92,15 +84,15 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             if (event.getY() < 50 && event.getX() < 50) {
                 thread.setRunning(false);
                 ((Activity)getContext()).finish();
-            } else if (event.getY() > getHeight() - edgeDist) {
-                player.setDirection(Gladiator.DIR.Down);
+            } /*else if (event.getY() > getHeight() - edgeDist) {
+                thread.getPlayer().setDirection(Gladiator.DIR.Down);
             } else if (event.getY() < edgeDist) {
-                player.setDirection(Gladiator.DIR.Up);
+                thread.getPlayer().setDirection(Gladiator.DIR.Up);
             } else if (event.getX() > getWidth() - edgeDist) {
-                player.setDirection(Gladiator.DIR.Right);
+                thread.getPlayer().setDirection(Gladiator.DIR.Right);
             } else if (event.getX() < edgeDist) {
-                player.setDirection(Gladiator.DIR.Left);
-            } else {
+                thread.getPlayer().setDirection(Gladiator.DIR.Left);
+            }*/ else {
                 Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
             }
         }
@@ -112,12 +104,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void draw(Canvas canvas) {
         drawStadium(canvas);
 
-        if (player.getPosY() < enemy.getPosY()) {
-            drawGladiator(canvas, player.getSprite(), player.getPosX(), player.getPosY());
-            drawGladiator(canvas, enemy.getSprite(), enemy.getPosX(), enemy.getPosY());
+        if (thread.getPlayer().getPosY() < thread.getEnemy().getPosY()) {
+            drawGladiator(canvas, thread.getPlayer().getSprite(), thread.getPlayer().getPosX(), thread.getPlayer().getPosY());
+            drawGladiator(canvas, thread.getEnemy().getSprite(), thread.getEnemy().getPosX(), thread.getEnemy().getPosY());
         } else {
-            drawGladiator(canvas, enemy.getSprite(), enemy.getPosX(), enemy.getPosY());
-            drawGladiator(canvas, player.getSprite(), player.getPosX(), player.getPosY());
+            drawGladiator(canvas, thread.getEnemy().getSprite(), thread.getEnemy().getPosX(), thread.getEnemy().getPosY());
+            drawGladiator(canvas, thread.getPlayer().getSprite(), thread.getPlayer().getPosX(), thread.getPlayer().getPosY());
         }
     }
 
@@ -132,11 +124,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private void drawGladiator(Canvas canvas, int resID, int posX, int posY) {
         canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), resID), hOffset + posX, vOffset + posY, null);
     }
-
-    public PlayerGladiator getPlayer() {
-        return player;
-    }
-    public EnemyGladiator getEnemy() { return enemy; }
 
     public MainThread getThread() {
         return thread;
