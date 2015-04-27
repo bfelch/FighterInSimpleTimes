@@ -9,6 +9,8 @@ import java.util.Random;
 public class EnemyGladiator extends Gladiator{
 
     public EnemyGladiator() {
+        super();
+
         Random r = new Random();
         int newX = r.nextInt((Stadium.TILES_W - 2) * Stadium.TILE_SIZE) + Stadium.TILE_SIZE;
         int newY = r.nextInt((Stadium.TILES_H - 2) * Stadium.TILE_SIZE) + Stadium.TILE_SIZE;

@@ -9,6 +9,9 @@ public abstract class Gladiator {
     };
 
     protected DIR movingDir = DIR.None;
+    protected long knockout = 0;
+
+    protected long maxKnockout = 2000;
 
     private int speed = 15;
 
@@ -25,6 +28,14 @@ public abstract class Gladiator {
 
     private int posX = 0;
     private int posY = 0;
+
+    private long currUpdate = 0;
+    private long prevUpdate = 0;
+
+    public Gladiator() {
+        currUpdate = System.currentTimeMillis();
+        prevUpdate = currUpdate;
+    }
 
     private void move() {
         if (movingDir != DIR.None) {
@@ -45,6 +56,25 @@ public abstract class Gladiator {
         }
     }
 
+    public void knockBack(DIR dir, int mod) {
+        int newSpeed = speed * mod;
+
+        switch (dir) {
+            case Up:
+                posY = clamp(posY - newSpeed, Stadium.TILE_SIZE, (Stadium.TILES_H - 2) * Stadium.TILE_SIZE);
+                break;
+            case Down:
+                posY = clamp(posY + newSpeed, Stadium.TILE_SIZE, (Stadium.TILES_H - 2) * Stadium.TILE_SIZE);
+                break;
+            case Left:
+                posX = clamp(posX - newSpeed, Stadium.TILE_SIZE, (Stadium.TILES_W - 2) * Stadium.TILE_SIZE);
+                break;
+            case Right:
+                posX = clamp(posX + newSpeed, Stadium.TILE_SIZE, (Stadium.TILES_W - 2) * Stadium.TILE_SIZE);
+                break;
+        }
+    }
+
     protected abstract void updateAnimation();
 
     protected void setDirection(DIR dir) {
@@ -52,9 +82,25 @@ public abstract class Gladiator {
         movingDir = dir;
     }
 
+    protected DIR getDirection() {
+        return movingDir;
+    }
+
+    protected void setKnockout() {
+        knockout = maxKnockout;
+    }
+
     public void update() {
-        updateAnimation();
-        move();
+        currUpdate = System.currentTimeMillis();
+
+        if (knockout >= 0) {
+            knockout -= currUpdate - prevUpdate;
+        } else {
+            updateAnimation();
+            move();
+        }
+
+        prevUpdate = currUpdate;
     }
 
     private int clamp(int val, int min, int max) {
@@ -76,5 +122,20 @@ public abstract class Gladiator {
 
     public int getSprite() {
         return currSprite;
+    }
+
+    public static DIR getOpposite(DIR original) {
+        switch (original) {
+            case Up:
+                return DIR.Down;
+            case Down:
+                return DIR.Up;
+            case Left:
+                return DIR.Right;
+            case Right:
+                return DIR.Left;
+        }
+
+        return DIR.None;
     }
 }

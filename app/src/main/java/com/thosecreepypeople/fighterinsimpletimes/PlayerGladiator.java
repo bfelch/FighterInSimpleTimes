@@ -20,9 +20,11 @@ public class PlayerGladiator extends Gladiator implements SensorEventListener {
     private Sensor sensor;
 
     private long lastUpdate;
-    private float tolerance = 2.0f;
+    private float tolerance = 1.0f;
 
     public PlayerGladiator(Context context) {
+        super();
+
         Random r = new Random();
         int newX = r.nextInt((Stadium.TILES_W - 2) * Stadium.TILE_SIZE) + Stadium.TILE_SIZE;
         int newY = r.nextInt((Stadium.TILES_H - 2) * Stadium.TILE_SIZE) + Stadium.TILE_SIZE;

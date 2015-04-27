@@ -84,20 +84,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             if (event.getY() < 50 && event.getX() < 50) {
                 thread.setRunning(false);
                 ((Activity)getContext()).finish();
-            } /*else if (event.getY() > getHeight() - edgeDist) {
-                thread.getPlayer().setDirection(Gladiator.DIR.Down);
+            } else if (event.getY() > getHeight() - edgeDist) {
+                thread.getEnemy().setDirection(Gladiator.DIR.Down);
             } else if (event.getY() < edgeDist) {
-                thread.getPlayer().setDirection(Gladiator.DIR.Up);
+                thread.getEnemy().setDirection(Gladiator.DIR.Up);
             } else if (event.getX() > getWidth() - edgeDist) {
-                thread.getPlayer().setDirection(Gladiator.DIR.Right);
+                thread.getEnemy().setDirection(Gladiator.DIR.Right);
             } else if (event.getX() < edgeDist) {
-                thread.getPlayer().setDirection(Gladiator.DIR.Left);
-            }*/ else {
+                thread.getEnemy().setDirection(Gladiator.DIR.Left);
+            } else {
                 Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
             }
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            thread.getEnemy().setDirection(Gladiator.DIR.None);
         }
 
-        return super.onTouchEvent(event);
+        return true;
     }
 
     @Override

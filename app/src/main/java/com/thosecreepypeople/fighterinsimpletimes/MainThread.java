@@ -62,9 +62,63 @@ public class MainThread extends Thread {
 
             player.update();
             enemy.update();
+
+            Gladiator.DIR collDir = detectCollision();
+
+            if (collDir != Gladiator.DIR.None) {
+                resolveCollision(collDir);
+            }
         }
 
         Log.d(TAG, "Game loop executed " + tickCount + " times");
+    }
+
+    // direction from player to enemy
+    private Gladiator.DIR detectCollision() {
+        float distX = player.getPosX() - enemy.getPosX();
+        float distY = player.getPosY() - enemy.getPosY();
+
+        float absDistX = Math.abs(distX);
+        float absDistY = Math.abs(distY);
+
+        if (absDistX < Stadium.TILE_SIZE) {
+            if (absDistY < Stadium.TILE_SIZE) {
+                if (absDistX >= absDistY) {
+                    if (distX >= 0) {
+                        return Gladiator.DIR.Left;
+                    } else {
+                        return Gladiator.DIR.Right;
+                    }
+                } else {
+                    if (distY >= 0) {
+                        return Gladiator.DIR.Up;
+                    } else {
+                        return Gladiator.DIR.Down;
+                    }
+                }
+            }
+        }
+
+        return Gladiator.DIR.None;
+    }
+
+    private void resolveCollision(Gladiator.DIR collDir) {
+        int takeHitSpeed = 4;
+        int giveHitSpeed = 2;
+
+        if (player.getDirection() == collDir) {
+            if (enemy.getDirection() != Gladiator.getOpposite(collDir)) {
+                enemy.setKnockout();
+                enemy.knockBack(collDir, takeHitSpeed);
+                player.knockBack(Gladiator.getOpposite(collDir), giveHitSpeed);
+            }
+        } else if (enemy.getDirection() == Gladiator.getOpposite(collDir)) {
+            if (player.getDirection() != collDir) {
+                player.setKnockout();
+                player.knockBack(Gladiator.getOpposite(collDir), takeHitSpeed);
+                enemy.knockBack(collDir, giveHitSpeed);
+            }
+        }
     }
 
     public PlayerGladiator getPlayer() {
