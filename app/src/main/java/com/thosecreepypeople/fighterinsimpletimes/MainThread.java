@@ -17,7 +17,7 @@ public class MainThread extends Thread {
     private MainGamePanel gamePanel;
 
     // player reference
-    private PlayerGladiator player;
+    private static PlayerGladiator player;
     private EnemyGladiator enemy;
 
     public MainThread(SurfaceHolder surfaceHolder, Context context, MainGamePanel gamePanel) {
@@ -121,7 +121,7 @@ public class MainThread extends Thread {
         }
     }
 
-    public PlayerGladiator getPlayer() {
+    public static PlayerGladiator getPlayer() {
         return player;
     }
     public EnemyGladiator getEnemy() { return enemy; }
