@@ -10,6 +10,8 @@ import com.thosecreepypeople.fighterinsimpletimes.MainThread;
 public class EnemyGladiator extends Gladiator{
 
     PlayerGladiator playerGladiator;
+    int randTimerLimit = 0;
+    int timer = 0;
 
     public EnemyGladiator() {
         super();
@@ -23,22 +25,33 @@ public class EnemyGladiator extends Gladiator{
         currSprite = R.mipmap.fg_idle1;
     }
 
-    public void moveXAxis(int xDist){
-        if(xDist > 0){
-            setDirection(DIR.Up);
-        }
-        else{
-            setDirection(DIR.Down);
-        }
-    }
+    public void random(){
+        Random r = new Random();
+        int rand = r.nextInt(5);
 
-    public void moveYAxis(int yDist){
-        if(yDist > 0){
-            setDirection(DIR.Right);
+        if(timer == randTimerLimit) {
+            switch (rand) {
+                case 0:
+                    setDirection(DIR.Up);
+                    break;
+                case 1:
+                    setDirection(DIR.Down);
+                    break;
+                case 2:
+                    setDirection(DIR.Right);
+                    break;
+                case 3:
+                    setDirection(DIR.Left);
+                    break;
+                case 4:
+                    setDirection(DIR.None);
+                    break;
+            }
+            timer = 0;
+            randTimerLimit = r.nextInt(20 - 5 + 1) + 5;
         }
-        else{
-            setDirection(DIR.Left);
-        }
+
+        timer++;
     }
 
     public void mirror(){
@@ -60,35 +73,31 @@ public class EnemyGladiator extends Gladiator{
     }
 
     public void follow(){
-        int posX = playerGladiator.getPosX();
-        int posY = playerGladiator.getPosY();
-        int xDist = posX - getPosX();
-        int yDist = posY - getPosY();
+        int xDist = playerGladiator.getPosX() - getPosX();
+        int yDist = playerGladiator.getPosY() - getPosY();
 
-       if(xDist == 0 && yDist == 0){
-           setDirection(DIR.None);
-       }
-       else if(xDist == 0){
-           moveYAxis(yDist);
-       }
-       else if(yDist == 0){
-           moveXAxis(xDist);
-       }
-       else if(xDist == yDist){
-           moveXAxis(xDist);
-       }
-       else if (xDist > yDist){
-           moveYAxis(yDist);
-       }
-       else if (xDist < yDist){
-           moveXAxis(xDist);
-       }
+        if(xDist == 0){
+            if(yDist > 0){
+                setDirection(DIR.Down);
+            }
+            else {
+                setDirection(DIR.Up);
+            }
+        }
+        else if(yDist == 0){
+            if(xDist > 0){
+                setDirection(DIR.Right);
+            }
+            else {
+                setDirection(DIR.Left);
+            }
+        }
     }
 
     public void chooseMovement(int level){
         switch(level){
             case 1:
-               // random();random movement
+                random();
                 break;
             case 2:
                 mirror();
@@ -102,7 +111,7 @@ public class EnemyGladiator extends Gladiator{
     @Override
     protected void updateAnimation() {
         updateFrame++;
-        chooseMovement(3);
+        chooseMovement(1);
 
         switch (movingDir) {
             case Up:
