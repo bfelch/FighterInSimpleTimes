@@ -118,6 +118,9 @@ public class MainThread extends Thread {
                 player.knockBack(Gladiator.getOpposite(collDir), takeHitSpeed);
                 enemy.knockBack(collDir, giveHitSpeed);
             }
+        } else {
+            player.knockBack(collDir, takeHitSpeed * 2);
+            enemy.knockBack(Gladiator.getOpposite(collDir), takeHitSpeed * 2);
         }
     }
 
