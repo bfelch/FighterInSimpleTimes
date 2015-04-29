@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -28,6 +30,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public MainGamePanel(Context context) {
         super(context);
+
+        /*
+        setZOrderOnTop(true);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
+        */
+
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), context, this);
         setFocusable(true);
@@ -116,6 +124,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void drawStadium(Canvas canvas) {
+        //canvas.drawColor(Color.TRANSPARENT);
         canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.stadium), hOffset, vOffset, null);
     }
 
