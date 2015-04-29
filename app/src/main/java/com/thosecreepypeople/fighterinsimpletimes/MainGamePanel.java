@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -28,6 +29,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int vOffset;
     private int hOffset;
 
+    private Bitmap stadium;
+
     public MainGamePanel(Context context) {
         super(context);
 
@@ -42,6 +45,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         // initialize stadium
         floor = Stadium.getStadium();
+        stadium = BitmapFactory.decodeResource(getResources(), R.mipmap.stadium);
 
         // get offsets
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -124,8 +128,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void drawStadium(Canvas canvas) {
-        //canvas.drawColor(Color.TRANSPARENT);
-        canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.stadium), hOffset, vOffset, null);
+        canvas.drawBitmap(stadium, hOffset, vOffset, null);
     }
 
     private void drawTile(Canvas canvas, int resID, int i, int j) {

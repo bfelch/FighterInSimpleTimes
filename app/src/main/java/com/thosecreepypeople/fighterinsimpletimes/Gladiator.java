@@ -111,7 +111,7 @@ public abstract class Gladiator {
 
         if (knockout >= 0) {
             knockout -= currUpdate - prevUpdate;
-            Log.d(TAG, "knockout: " + knockout);
+            //Log.d(TAG, "knockout: " + knockout);
         }
 
         updateAnimation();
