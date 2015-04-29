@@ -42,6 +42,12 @@ public class PlayerGladiator extends Gladiator implements SensorEventListener {
     protected void updateAnimation() {
         updateFrame++;
 
+        int delay = 200;
+        if (knockout % delay >= delay / 2) {
+            currSprite = R.mipmap.none;
+            return;
+        }
+
         switch (movingDir) {
             case Up:
                 animFrame = (updateFrame / animDelay) % maxAnimFrameUp;

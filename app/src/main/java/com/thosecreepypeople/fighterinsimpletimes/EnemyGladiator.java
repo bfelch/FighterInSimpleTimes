@@ -113,6 +113,12 @@ public class EnemyGladiator extends Gladiator{
         updateFrame++;
         chooseMovement(1);
 
+        int delay = 200;
+        if (knockout % delay >= delay / 2) {
+            currSprite = R.mipmap.none;
+            return;
+        }
+
         switch (movingDir) {
             case Up:
                 animFrame = (updateFrame / animDelay) % maxAnimFrameUp;

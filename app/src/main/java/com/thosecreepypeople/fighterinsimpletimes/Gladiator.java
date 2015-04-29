@@ -93,11 +93,17 @@ public abstract class Gladiator {
     }
 
     protected void setKnockout() {
-        health--;
-        if (health <= 0) {
-            Log.d(TAG, "LOSER!");
+        if (knockout <= 0) {
+            health--;
+            if (health <= 0) {
+                //Log.d(TAG, "LOSER!");
+            }
+            knockout = maxKnockout;
         }
-        knockout = maxKnockout;
+    }
+
+    public long getKnockout() {
+        return knockout;
     }
 
     public void update() {
@@ -105,10 +111,11 @@ public abstract class Gladiator {
 
         if (knockout >= 0) {
             knockout -= currUpdate - prevUpdate;
-        } else {
-            updateAnimation();
-            move();
+            Log.d(TAG, "knockout: " + knockout);
         }
+
+        updateAnimation();
+        move();
 
         prevUpdate = currUpdate;
     }
