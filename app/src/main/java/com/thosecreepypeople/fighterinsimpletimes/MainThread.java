@@ -29,6 +29,9 @@ public class MainThread extends Thread {
         // create player
         player = new PlayerGladiator(context);
         enemy = new EnemyGladiator();
+
+        player.setCanMove(true);
+        enemy.setCanMove(true);
     }
 
     public void setRunning(boolean running) {

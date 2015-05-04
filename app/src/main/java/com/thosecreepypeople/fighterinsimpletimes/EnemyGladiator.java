@@ -16,6 +16,8 @@ public class EnemyGladiator extends Gladiator{
     int randTimerLimit = 0;
     int timer = 0;
 
+    int aiLevel = 1;
+
     public EnemyGladiator() {
         super();
 
@@ -114,7 +116,7 @@ public class EnemyGladiator extends Gladiator{
     @Override
     protected void updateAnimation() {
         updateFrame++;
-        chooseMovement(1);
+        chooseMovement(aiLevel);
 
         int delay = 200;
         if (knockout % delay >= delay / 2) {
@@ -217,6 +219,17 @@ public class EnemyGladiator extends Gladiator{
 
         for (int i = 0; i < health; i++) {
             canvas.drawBitmap(heart, size.x - Stadium.TILE_SIZE * (i + 1), 0, null);
+        }
+    }
+
+    @Override
+    public void setCanMove(boolean canMove) {
+        super.setCanMove(canMove);
+
+        if (!canMove) {
+            aiLevel = 0;
+        } else {
+            aiLevel = 1;
         }
     }
 }
