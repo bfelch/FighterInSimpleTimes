@@ -1,5 +1,9 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Point;
+
 import java.util.Random;
 import com.thosecreepypeople.fighterinsimpletimes.MainThread;
 
@@ -197,6 +201,15 @@ public class EnemyGladiator extends Gladiator{
                     currSprite = R.mipmap.fg_idle2;
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void drawHealth(Canvas canvas, Bitmap heart) {
+        Point size = MainGamePanel.size;
+
+        for (int i = 0; i < health; i++) {
+            canvas.drawBitmap(heart, size.x - Stadium.TILE_SIZE * (i + 1), 0, null);
         }
     }
 }

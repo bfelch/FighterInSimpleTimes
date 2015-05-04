@@ -1,6 +1,9 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -166,5 +169,12 @@ public class PlayerGladiator extends Gladiator implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    @Override
+    public void drawHealth(Canvas canvas, Bitmap heart) {
+        for (int i = 0; i < health; i++) {
+            canvas.drawBitmap(heart, Stadium.TILE_SIZE * i, 0, null);
+        }
     }
 }

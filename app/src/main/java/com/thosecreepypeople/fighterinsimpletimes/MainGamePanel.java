@@ -24,12 +24,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private MainThread thread;
 
+    public static Point size;
+
     // layout of stadium
     private char[][] floor;
     private int vOffset;
     private int hOffset;
 
+    private int backVOffset;
+    private int backHOffset;
+
     private Bitmap stadium;
+    private Bitmap backdrop;
+
+    private Bitmap heart;
 
     public MainGamePanel(Context context) {
         super(context);
@@ -46,14 +54,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         // initialize stadium
         floor = Stadium.getStadium();
         stadium = BitmapFactory.decodeResource(getResources(), R.mipmap.stadium);
+        backdrop = BitmapFactory.decodeResource(getResources(), R.mipmap.backdrop);
+
+        heart = BitmapFactory.decodeResource(getResources(), R.mipmap.life_heart);
 
         // get offsets
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        Point size = new Point();
+        size = new Point();
         display.getSize(size);
         vOffset = (size.y - (Stadium.TILES_H * Stadium.TILE_SIZE)) / 2;
         hOffset = (size.x - (Stadium.TILES_W * Stadium.TILE_SIZE)) / 2;
+
+        backVOffset = (size.y - backdrop.getHeight()) / 2;
+        backHOffset = (size.x - backdrop.getWidth()) / 2;
     }
 
     @Override
@@ -125,9 +139,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             drawGladiator(canvas, thread.getEnemy().getSprite(), thread.getEnemy().getPosX(), thread.getEnemy().getPosY());
             drawGladiator(canvas, thread.getPlayer().getSprite(), thread.getPlayer().getPosX(), thread.getPlayer().getPosY());
         }
+
+        thread.getPlayer().drawHealth(canvas, heart);
+        thread.getEnemy().drawHealth(canvas, heart);
     }
 
     private void drawStadium(Canvas canvas) {
+        canvas.drawBitmap(backdrop, backHOffset, backVOffset, null);
         canvas.drawBitmap(stadium, hOffset, vOffset, null);
     }
 

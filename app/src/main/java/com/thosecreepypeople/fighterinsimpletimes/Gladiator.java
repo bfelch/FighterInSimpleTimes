@@ -1,6 +1,11 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Point;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * Created by Brandon on 4/12/2015.
@@ -13,6 +18,7 @@ public abstract class Gladiator {
     public static final String TAG = "Gladiator";
 
     protected int health;
+
     protected DIR movingDir = DIR.None;
     protected long knockout = 0;
 
@@ -155,4 +161,6 @@ public abstract class Gladiator {
 
         return DIR.None;
     }
+
+    public abstract void drawHealth(Canvas canvas, Bitmap heart);
 }
