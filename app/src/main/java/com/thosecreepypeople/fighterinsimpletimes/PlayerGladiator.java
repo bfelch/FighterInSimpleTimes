@@ -3,12 +3,10 @@ package com.thosecreepypeople.fighterinsimpletimes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -131,9 +129,9 @@ public class PlayerGladiator extends Gladiator implements SensorEventListener {
                     }
                 } else {
                     if (animFrame == 0) {
-                        currSprite = -1;
+                        currSprite = R.mipmap.bf_hit1;
                     } else if (animFrame == 1) {
-                        currSprite = -1;
+                        currSprite = R.mipmap.bf_hit2;
                     }
                 }
                 break;

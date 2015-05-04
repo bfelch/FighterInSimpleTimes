@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 
 import java.util.Random;
-import com.thosecreepypeople.fighterinsimpletimes.MainThread;
 
 /**
  * Created by Heather on 4/22/2015.
@@ -203,9 +202,9 @@ public class EnemyGladiator extends Gladiator{
                     }
                 } else {
                     if (animFrame == 0) {
-                        currSprite = -1;
+                        currSprite = R.mipmap.fg_hit1;
                     } else if (animFrame == 1) {
-                        currSprite = -1;
+                        currSprite = R.mipmap.fg_hit2;
                     }
                 }
                 break;
