@@ -37,6 +37,8 @@ public abstract class Gladiator {
     protected int maxAnimFrameLeft = 7;
     protected int maxAnimFrameRight = 7;
 
+    protected boolean canMove;
+
     private int posX = 0;
     private int posY = 0;
 
@@ -102,7 +104,7 @@ public abstract class Gladiator {
         if (knockout <= 0) {
             health--;
             if (health <= 0) {
-                //Log.d(TAG, "LOSER!");
+                setCanMove(false);
             }
             knockout = maxKnockout;
         }
@@ -121,7 +123,10 @@ public abstract class Gladiator {
         }
 
         updateAnimation();
-        move();
+
+        if (canMove) {
+            move();
+        }
 
         prevUpdate = currUpdate;
     }
@@ -160,6 +165,10 @@ public abstract class Gladiator {
         }
 
         return DIR.None;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
     }
 
     public abstract void drawHealth(Canvas canvas, Bitmap heart);

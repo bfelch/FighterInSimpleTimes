@@ -195,10 +195,18 @@ public class EnemyGladiator extends Gladiator{
             case None:
                 animFrame = (updateFrame / animDelay) % maxAnimFrameIdle;
 
-                if (animFrame == 0) {
-                    currSprite = R.mipmap.fg_idle1;
-                } else if (animFrame == 1) {
-                    currSprite = R.mipmap.fg_idle2;
+                if (health > 0) {
+                    if (animFrame == 0) {
+                        currSprite = R.mipmap.fg_idle1;
+                    } else if (animFrame == 1) {
+                        currSprite = R.mipmap.fg_idle2;
+                    }
+                } else {
+                    if (animFrame == 0) {
+                        currSprite = -1;
+                    } else if (animFrame == 1) {
+                        currSprite = -1;
+                    }
                 }
                 break;
         }
