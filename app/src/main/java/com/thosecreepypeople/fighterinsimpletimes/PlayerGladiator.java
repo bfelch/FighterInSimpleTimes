@@ -49,6 +49,10 @@ public class PlayerGladiator extends Gladiator implements SensorEventListener {
             return;
         }
 
+        if(Gladiator.stopMoving){
+            movingDir = DIR.None;
+        }
+
         switch (movingDir) {
             case Up:
                 animFrame = (updateFrame / animDelay) % maxAnimFrameUp;

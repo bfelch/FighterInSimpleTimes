@@ -16,6 +16,7 @@ public abstract class Gladiator {
     };
 
     public static final String TAG = "Gladiator";
+    public static boolean stopMoving;
 
     protected int health;
 
@@ -105,6 +106,7 @@ public abstract class Gladiator {
             health--;
             if (health <= 0) {
                 setCanMove(false);
+                stopMoving = true;
             }
             knockout = maxKnockout;
         }
@@ -124,7 +126,7 @@ public abstract class Gladiator {
 
         updateAnimation();
 
-        if (canMove) {
+        if (canMove && !stopMoving) {
             move();
         }
 
@@ -170,6 +172,8 @@ public abstract class Gladiator {
     public void setCanMove(boolean canMove) {
         this.canMove = canMove;
     }
+
+    public boolean getCanMove() { return this.canMove; }
 
     public abstract void drawHealth(Canvas canvas, Bitmap heart);
 }

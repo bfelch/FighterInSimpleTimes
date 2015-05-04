@@ -16,9 +16,12 @@ public class EnemyGladiator extends Gladiator{
     int randTimerLimit = 0;
     int timer = 0;
 
-    int aiLevel = 1;
+    boolean isCharging = false;
 
-    public EnemyGladiator() {
+    int currentLevel = 0;
+    int aiLevel = 0;
+
+    public EnemyGladiator(int level) {
         super();
 
         Random r = new Random();
@@ -28,6 +31,9 @@ public class EnemyGladiator extends Gladiator{
         playerGladiator = MainThread.getPlayer();
 
         currSprite = R.mipmap.fg_idle1;
+
+        aiLevel = level;
+        currentLevel = aiLevel;
     }
 
     public void random(){
@@ -77,51 +83,74 @@ public class EnemyGladiator extends Gladiator{
         }
     }
 
+    public boolean inLineOfSight(int xDist, int yDist){
+        return (xDist < 25 && xDist > -25) || (yDist < 25 && yDist > -25);
+    }
+
     public void follow(){
         int xDist = playerGladiator.getPosX() - getPosX();
         int yDist = playerGladiator.getPosY() - getPosY();
 
-        if(xDist == 0){
-            if(yDist > 0){
-                setDirection(DIR.Down);
-            }
-            else {
-                setDirection(DIR.Up);
+        if(isCharging || health < 0){
+            if(playerGladiator.getKnockout() > 0
+               || ((getDirection() == DIR.Left || getDirection() == DIR.Right) && (getPosX() == Stadium.TILE_SIZE || getPosX() == (Stadium.TILES_W - 2) * Stadium.TILE_SIZE))
+               || ((getDirection() == DIR.Up || getDirection() == DIR.Down) && (getPosY() == Stadium.TILE_SIZE || getPosY() == (Stadium.TILES_H - 2) * Stadium.TILE_SIZE))) {
+                isCharging = false;
+                setDirection(DIR.None);
             }
         }
-        else if(yDist == 0){
-            if(xDist > 0){
-                setDirection(DIR.Right);
+        else {
+            if(xDist < 25 && xDist > -25){
+                if(yDist > 0){
+                    setDirection(DIR.Down);
+                }
+                else{
+                    setDirection(DIR.Up);
+                }
+                isCharging = true;
+            } else if(yDist < 25 && yDist > -25){
+                if(xDist > 0){
+                    setDirection(DIR.Right);
+                }
+                else{
+                    setDirection(DIR.Left);
+                }
+                isCharging = true;
             }
             else {
-                setDirection(DIR.Left);
+                setDirection(DIR.None);
             }
         }
     }
 
     public void chooseMovement(int level){
-        switch(level){
-            case 1:
-                random();
-                break;
-            case 2:
-                mirror();
-                break;
-            case 3:
-                follow();
-                break;
-        }
+            switch (level) {
+                case 1:
+                    mirror();
+                    break;
+                case 2:
+                    random();
+                    break;
+                case 3:
+                    follow();
+                    break;
+            }
     }
 
     @Override
     protected void updateAnimation() {
         updateFrame++;
-        chooseMovement(aiLevel);
+
+        chooseMovement(currentLevel);
 
         int delay = 200;
         if (knockout % delay >= delay / 2) {
             currSprite = R.mipmap.none;
             return;
+        }
+
+        if(Gladiator.stopMoving){
+            movingDir = DIR.None;
         }
 
         switch (movingDir) {
@@ -227,9 +256,9 @@ public class EnemyGladiator extends Gladiator{
         super.setCanMove(canMove);
 
         if (!canMove) {
-            aiLevel = 0;
+            currentLevel = 0;
         } else {
-            aiLevel = 1;
+            currentLevel = aiLevel;
         }
     }
 }
