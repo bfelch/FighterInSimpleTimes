@@ -1,6 +1,11 @@
 package com.thosecreepypeople.fighterinsimpletimes;
 
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Point;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * Created by Brandon on 4/12/2015.
@@ -13,6 +18,7 @@ public abstract class Gladiator {
     public static final String TAG = "Gladiator";
 
     protected int health;
+
     protected DIR movingDir = DIR.None;
     protected long knockout = 0;
 
@@ -30,6 +36,8 @@ public abstract class Gladiator {
     protected int maxAnimFrameDown = 6;
     protected int maxAnimFrameLeft = 7;
     protected int maxAnimFrameRight = 7;
+
+    protected boolean canMove;
 
     private int posX = 0;
     private int posY = 0;
@@ -96,7 +104,7 @@ public abstract class Gladiator {
         if (knockout <= 0) {
             health--;
             if (health <= 0) {
-                //Log.d(TAG, "LOSER!");
+                setCanMove(false);
             }
             knockout = maxKnockout;
         }
@@ -111,11 +119,14 @@ public abstract class Gladiator {
 
         if (knockout >= 0) {
             knockout -= currUpdate - prevUpdate;
-            Log.d(TAG, "knockout: " + knockout);
+            //Log.d(TAG, "knockout: " + knockout);
         }
 
         updateAnimation();
-        move();
+
+        if (canMove) {
+            move();
+        }
 
         prevUpdate = currUpdate;
     }
@@ -155,4 +166,10 @@ public abstract class Gladiator {
 
         return DIR.None;
     }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
+    public abstract void drawHealth(Canvas canvas, Bitmap heart);
 }

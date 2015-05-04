@@ -10,7 +10,7 @@ public class Stadium {
     public static final int ASPECT_W = 4;
     public static final int ASPECT_H = 3;
 
-    public static final int MODIFIER = 2;
+    public static final int MODIFIER = 3;
 
     public static final int TILES_W = ASPECT_W * MODIFIER;
     public static final int TILES_H = ASPECT_H * MODIFIER;
