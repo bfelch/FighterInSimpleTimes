@@ -177,5 +177,7 @@ public abstract class Gladiator {
         this.canMove = canMove;
     }
 
+    public boolean getCanMove() { return this.canMove; }
+
     public abstract void drawHealth(Canvas canvas, Bitmap heart);
 }
