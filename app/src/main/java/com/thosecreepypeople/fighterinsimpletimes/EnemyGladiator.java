@@ -66,7 +66,8 @@ public class EnemyGladiator extends Gladiator{
     }
 
     public void mirror(){
-        if(playerGladiator.getDirection() == DIR.Down){
+        setDirection(playerGladiator.getDirection());
+        /*if(playerGladiator.getDirection() == DIR.Down){
             setDirection(DIR.Down);
         }
         else if (playerGladiator.getDirection() == DIR.Up){
@@ -80,7 +81,7 @@ public class EnemyGladiator extends Gladiator{
         }
         else{
             setDirection(DIR.None);
-        }
+        }*/
     }
 
     public boolean inLineOfSight(int xDist, int yDist){
@@ -147,10 +148,6 @@ public class EnemyGladiator extends Gladiator{
         if (knockout % delay >= delay / 2) {
             currSprite = R.mipmap.none;
             return;
-        }
-
-        if(Gladiator.stopMoving){
-            movingDir = DIR.None;
         }
 
         switch (movingDir) {

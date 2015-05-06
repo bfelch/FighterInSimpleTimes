@@ -28,12 +28,10 @@ public class MainThread extends Thread {
 
         // create player
         player = new PlayerGladiator(context);
-        enemy = new EnemyGladiator(1);
+        enemy = new EnemyGladiator(2);
 
         player.setCanMove(true);
         enemy.setCanMove(true);
-
-        Gladiator.stopMoving = false;
     }
 
     public void setRunning(boolean running) {
