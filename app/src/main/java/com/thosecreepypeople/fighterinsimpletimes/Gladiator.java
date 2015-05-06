@@ -92,19 +92,25 @@ public abstract class Gladiator {
     protected abstract void updateAnimation();
 
     protected void setDirection(DIR dir) {
-        updateFrame = movingDir != dir ? 0 : updateFrame; // reset frame if new direction
-        movingDir = dir;
+        if (canMove) {
+            updateFrame = movingDir != dir ? 0 : updateFrame; // reset frame if new direction
+            movingDir = dir;
+        }
     }
 
     protected DIR getDirection() {
         return movingDir;
     }
 
-    protected void setKnockout() {
+    protected void setKnockout(Gladiator other) {
         if (knockout <= 0) {
             health--;
             if (health <= 0) {
+                setDirection(DIR.None);
                 setCanMove(false);
+
+                other.setDirection(DIR.None);
+                other.setCanMove(false);
             }
             knockout = maxKnockout;
         }

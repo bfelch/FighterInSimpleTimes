@@ -111,13 +111,13 @@ public class MainThread extends Thread {
 
         if (player.getDirection() == collDir) {
             if (enemy.getDirection() != Gladiator.getOpposite(collDir)) {
-                enemy.setKnockout();
+                enemy.setKnockout(player);
                 enemy.knockBack(collDir, takeHitSpeed);
                 player.knockBack(Gladiator.getOpposite(collDir), giveHitSpeed);
             }
         } else if (enemy.getDirection() == Gladiator.getOpposite(collDir)) {
             if (player.getDirection() != collDir) {
-                player.setKnockout();
+                player.setKnockout(enemy);
                 player.knockBack(Gladiator.getOpposite(collDir), takeHitSpeed);
                 enemy.knockBack(collDir, giveHitSpeed);
             }
