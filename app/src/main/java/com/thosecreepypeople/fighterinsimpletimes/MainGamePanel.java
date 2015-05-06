@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -38,6 +39,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Bitmap backdrop;
 
     private Bitmap heart;
+    private Bitmap home;
 
     public MainGamePanel(Context context) {
         super(context);
@@ -57,6 +59,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         backdrop = BitmapFactory.decodeResource(getResources(), R.mipmap.backdrop);
 
         heart = BitmapFactory.decodeResource(getResources(), R.mipmap.life_heart);
+        home = BitmapFactory.decodeResource(getResources(), R.mipmap.home);
 
         // get offsets
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -102,27 +105,36 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         // if upper left corner, close
         // else if edge, move in that direction
         // else print touch location
-        int edgeDist = 100;
+        int edgeDist = 128;
 
-        boolean debugging = true;
+        boolean debugging = false;
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN && debugging) {
-            if (event.getY() < 50 && event.getX() < 50) {
-                thread.setRunning(false);
-                ((Activity)getContext()).finish();
-            } else if (event.getY() > getHeight() - edgeDist) {
-                thread.getEnemy().setDirection(Gladiator.DIR.Down);
-            } else if (event.getY() < edgeDist) {
-                thread.getEnemy().setDirection(Gladiator.DIR.Up);
-            } else if (event.getX() > getWidth() - edgeDist) {
-                thread.getEnemy().setDirection(Gladiator.DIR.Right);
-            } else if (event.getX() < edgeDist) {
-                thread.getEnemy().setDirection(Gladiator.DIR.Left);
-            } else {
-                Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
+        if (debugging) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getY() < 50 && event.getX() < 50) {
+                    thread.setRunning(false);
+                    ((Activity) getContext()).finish();
+                } else if (event.getY() > getHeight() - edgeDist) {
+                    thread.getEnemy().setDirection(Gladiator.DIR.Down);
+                } else if (event.getY() < edgeDist) {
+                    thread.getEnemy().setDirection(Gladiator.DIR.Up);
+                } else if (event.getX() > getWidth() - edgeDist) {
+                    thread.getEnemy().setDirection(Gladiator.DIR.Right);
+                } else if (event.getX() < edgeDist) {
+                    thread.getEnemy().setDirection(Gladiator.DIR.Left);
+                } else {
+                    Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
+                }
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                thread.getEnemy().setDirection(Gladiator.DIR.None);
             }
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            thread.getEnemy().setDirection(Gladiator.DIR.None);
+        } else {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getY() > getHeight() - edgeDist && event.getX() > getWidth() - edgeDist) {
+                    //TODO Set intent here
+                    Log.d(TAG, "HOME INTENT");
+                }
+            }
         }
 
         return true;
@@ -142,6 +154,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         thread.getPlayer().drawHealth(canvas, heart);
         thread.getEnemy().drawHealth(canvas, heart);
+
+        canvas.drawBitmap(home, getWidth() - 128, getHeight() - 128, null);
+
+        if (thread.getPlayer().health <= 0) {
+            drawText(canvas, "Loser!");
+        } else if (thread.getEnemy().health <= 0) {
+            drawText(canvas, "Winner!");
+        }
     }
 
     private void drawStadium(Canvas canvas) {
@@ -155,6 +175,23 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private void drawGladiator(Canvas canvas, int resID, int posX, int posY) {
         canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), resID), hOffset + posX, vOffset + posY, null);
+    }
+
+    private void drawText(Canvas canvas, String text) {
+        Paint paint = new Paint();
+
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(256);
+
+        Rect bounds = new Rect();
+        paint.getTextBounds(text,0,text.length(),bounds);
+        int height = bounds.height();
+        int width = bounds.width();
+
+        int x = (getWidth() - width) / 2;
+        int y = (getHeight() - height) / 2;
+
+        canvas.drawText(text, x, y, paint);
     }
 
     public MainThread getThread() {
